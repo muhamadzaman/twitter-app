@@ -1,10 +1,20 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { tweetsReducer } from "../containers/Tweets/twitter.slice";
+import { tweetsAPI } from "../containers/Tweets/twitter.api";
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    tweets: tweetsReducer,
+    [tweetsAPI.reducerPath]: tweetsAPI.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat([
+      //addMiddlewareHere
+
+      tweetsAPI.middleware,
+    ]),
 });
 
 export type AppDispatch = typeof store.dispatch;
